@@ -1,9 +1,18 @@
 from pymongo import MongoClient
 from fastapi import FastAPI
+from urllib.parse import quote_plus
 
 app = FastAPI()
 
-client = MongoClient('mongodb://localhost:27017/')
+username = quote_plus("hemasaiamujuri3")
+password = quote_plus("hemasai@123")
+
+# Update connection string with encoded username and password
+connection_string = f"mongodb+srv://{username}:{password}@questions.e2ai2cz.mongodb.net/"
+
+# Connect to MongoDB
+client = MongoClient(connection_string)
+
 db = client['MockTestDatabase']
 
 # Define endpoint to fetch questions based on branch and number of questions
@@ -31,6 +40,7 @@ def get_questions(body: dict):
         
     return {'questions': formatted_questions,}
 
+    
 
 @app.get('/')
 def home():
